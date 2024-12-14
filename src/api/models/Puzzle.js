@@ -1,7 +1,13 @@
 const mongoose = require('mongoose');
+const { v4: uuid } = require('uuid');
 
 const PuzzleSchema = new mongoose.Schema(
     {
+        // Unique session ID
+        _id: { 
+            type: String, 
+            default: uuid
+        },
         // The code snippet
         code: { 
             type: String, 
@@ -10,6 +16,7 @@ const PuzzleSchema = new mongoose.Schema(
         // 1-based index of the vulnerable line
         vulnerableLine: { 
             type: Number, 
+            min: 1,
             required: true 
         }, 
         // puzzle difficulty level 
