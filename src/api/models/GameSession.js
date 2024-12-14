@@ -13,14 +13,15 @@ const GameSessionSchema = new mongoose.Schema(
             {   
                 // Reference to the Puzzle
                 puzzleId: { 
-                    type: mongoose.Schema.Types.ObjectId, 
+                    type: String, 
                     ref: 'Puzzle', 
                     required: true 
                 }, 
                 // User's selected line
                 selectedLine: { 
                     type: Number, 
-                    required: true 
+                    required: true, 
+                    min: 1
                 }, 
                 // True if correct, false otherwise
                 correct: { 
@@ -35,5 +36,9 @@ const GameSessionSchema = new mongoose.Schema(
         timestamps: true 
     } 
 );
+
+// TTL Index: Automatically delete documents after the `expireAt` date
+GameSessionSchema.index({ expireAt: 1 }, { expireAfterSeconds: 0 });
+GameSessionSchema.index({ sessionId: 1 });
 
 module.exports = mongoose.model('GameSession', GameSessionSchema);
