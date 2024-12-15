@@ -14,7 +14,7 @@ router.get('/', fetchGameSession, async (req, res) => {
 });
 
 // Start a new game session and set sessionId in a cookie
-router.post('/', async (req, res) => {
+router.post('/newSession', async (req, res) => {
     try {
         const sessionId = uuidv4(); 
         const session = new GameSession({ sessionId, puzzles: [] });
@@ -23,8 +23,9 @@ router.post('/', async (req, res) => {
         // Set the sessionId in a cookie
         res.cookie('sessionId', sessionId, {
             httpOnly: true, // Prevent client-side JavaScript access
-            maxAge: 24 * 60 * 60 * 1000, // Cookie expires in 1 day
-            sameSite: "strict"
+            maxAge: 60 * 60 * 1000, // Cookie expires in 1 day
+            sameSite: "strict",
+            secure: true,
         });
 
         res.status(201).json({ message: 'Game session started', sessionId });
@@ -54,11 +55,8 @@ router.get('/newPuzzle', fetchGameSession, async (req, res) => {
 
         const { _id, code, difficulty } = newPuzzle[0];
 
-        res.json({
-            id: _id,
-            code,
-            difficulty,
-        });
+        return res.json({id: _id, code, difficulty});
+
     } catch (error) {
         console.log(error.message);
         res.status(500).json({ error: 'Error fetching new puzzle' });
@@ -93,12 +91,13 @@ router.post('/puzzleResult', fetchGameSession, async (req, res) => {
 
         // Check if the selected line matches the vulnerable line
         const correct = puzzle.vulnerableLine === selectedLine;
-        
+
         // Update the session with the result
         session.puzzles.push({ puzzleId, selectedLine, correct });
         await session.save();
 
-        res.json({ message: 'Puzzle result recorded successfully' });
+        res.json({ message: 'Puzzle result recorded successfully', correct, correctLine: puzzle.vulnerableLine });
+
     } catch (error) {
         console.log(error.message);
 
