@@ -1,46 +1,37 @@
 const express = require('express');
-const cookieParser = require("cookie-parser");
-const connectDB = require('./database');
-const mongoose = require('mongoose');
+const cookieParser = require('cookie-parser');
 const mongoSanitize = require('express-mongo-sanitize');
 const RateLimit = require('express-rate-limit');
+const serverless = require('serverless-http');
 
-require('dotenv').config(); 
+require('dotenv').config();
 
 const gameSessionRoutes = require('./routes/sessions');
-// initialise the application
-const app = express()
+const connectDB = require('./database');
 
-// connecting to the mongoDB 
+// Initialise the application
+const app = express();
+
+app.set('trust proxy', 2);
+// Connect to MongoDB
 connectDB();
 
-// set up rate limiter: maximum of five requests per minute
+// Set up rate limiter: maximum of 100 requests per 15 minutes
 const limiter = RateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
   max: 100, // max 100 requests per windowMs
 });
 
-mongoose.set('sanitizeFilter', true);
-
-// Middleware 
+// Middleware
 app.use(express.json());
 app.use(cookieParser());
 app.use(limiter);
-app.use(mongoSanitize());
+app.use(mongoSanitize({
+  replaceWith: '_', // Replace prohibited characters instead of removing them (optional)
+}));
 
-// Replace prohibited characters instead of removing them (optional)
-app.use(
-    mongoSanitize({
-        replaceWith: '_',
-    })
-);
-
-
-// Routes 
+// Routes
 app.use('/gameSession', gameSessionRoutes);
 
-// Start the server
-const PORT = process.env.PORT || 9000;
-app.listen(PORT, () => {
-    console.log(`Server running on http://localhost:${PORT}`);
-});
+// Export the app as a handler for serverless
+module.exports.handler = serverless(app);
