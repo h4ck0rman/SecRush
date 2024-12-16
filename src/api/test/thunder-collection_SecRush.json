@@ -1,0 +1,64 @@
+{
+    "clientName": "Thunder Client",
+    "collectionName": "SecRush",
+    "collectionId": "f24f0bbf-8aa9-4f1e-9540-e59e78fb4683",
+    "dateExported": "2024-12-14T05:41:54.508Z",
+    "version": "1.2",
+    "folders": [],
+    "requests": [
+        {
+            "_id": "48bb02b5-5365-4e66-8ae9-3753f810b182",
+            "colId": "f24f0bbf-8aa9-4f1e-9540-e59e78fb4683",
+            "containerId": "",
+            "name": "Get Game",
+            "url": "http://localhost:9999/gameSession",
+            "method": "GET",
+            "sortNum": 10000,
+            "created": "2024-12-14T05:19:45.933Z",
+            "modified": "2024-12-14T05:21:29.515Z",
+            "headers": []
+        },
+        {
+            "_id": "0e10a1ca-c9ae-4f1b-896a-2b12bdbdabba",
+            "colId": "f24f0bbf-8aa9-4f1e-9540-e59e78fb4683",
+            "containerId": "",
+            "name": "New Game",
+            "url": "http://localhost:9999/gameSession/",
+            "method": "POST",
+            "sortNum": 20000,
+            "created": "2024-12-14T05:19:52.360Z",
+            "modified": "2024-12-14T05:31:57.722Z",
+            "headers": []
+        },
+        {
+            "_id": "591738eb-0ddf-4bce-a54c-4a75c147181b",
+            "colId": "f24f0bbf-8aa9-4f1e-9540-e59e78fb4683",
+            "containerId": "",
+            "name": "Get Puzzle",
+            "url": "http://localhost:9999/gameSession/newPuzzle",
+            "method": "GET",
+            "sortNum": 20000,
+            "created": "2024-12-14T05:28:27.789Z",
+            "modified": "2024-12-14T05:31:54.025Z",
+            "headers": []
+        },
+        {
+            "_id": "cb01cfe2-25b2-4fd7-9fce-df817787fe39",
+            "colId": "f24f0bbf-8aa9-4f1e-9540-e59e78fb4683",
+            "containerId": "",
+            "name": "Submit Puzzle",
+            "url": "http://localhost:9999/gameSession/puzzleResult",
+            "method": "POST",
+            "sortNum": 30000,
+            "created": "2024-12-14T05:20:00.658Z",
+            "modified": "2024-12-14T05:39:20.526Z",
+            "headers": [],
+            "body": {
+                "type": "json",
+                "raw": "{ \"puzzleId\":\"8bf4168f-92c7-4ed5-8da8-0ff80cc69a14\",\"selectedLine\":2 }",
+                "form": []
+            }
+        }
+    ],
+    "ref": "Pl7QLEpbEYxwqNkI2mJ_2NNwWrkHTUCWjtycEvbvhSkiKi3HhXW3k9uT-klPAdMFhByccsz6tx_kb5S6B_0sTg"
+}

@@ -1,0 +1,26 @@
+org: h4ck0rs
+app: secrush
+service: serverless-app
+
+provider:
+  name: aws
+  runtime: nodejs18.x
+  region: us-east-1
+  environment:
+    MONGODB_URI: ${env:MONGODB_URL}
+    NODE_ENV: ${env:NODE_ENV, 'production'} # Default to 'development' if NODE_ENV is not set
+
+functions:
+  app:
+    handler: app.handler
+    events:
+      - httpApi:
+          path: /{proxy+} # Serves all routes under /gameSession
+          method: any
+
+plugins:
+  - serverless-dotenv-plugin # Ensures environment variables from .env are loaded
+
+custom:
+  dotenv:
+    path: .env # Specify the .env file location
