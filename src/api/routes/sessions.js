@@ -24,7 +24,6 @@ router.post('/newSession', async (req, res) => {
         res.cookie('sessionId', sessionId, {
             httpOnly: true, // Prevent client-side JavaScript access
             maxAge: 60 * 60 * 1000, // Cookie expires in 1 day
-            sameSite: "strict",
             secure: true,
         });
 
@@ -53,9 +52,9 @@ router.get('/newPuzzle', fetchGameSession, async (req, res) => {
             return res.status(404).json({ error: 'No more puzzles available for this session' });
         }
 
-        const { _id, code, difficulty } = newPuzzle[0];
+        const { _id, code, difficulty, language } = newPuzzle[0];
+        return res.json({id: _id, code, difficulty, language});
 
-        return res.json({id: _id, code, difficulty});
 
     } catch (error) {
         console.log(error.message);
@@ -64,7 +63,8 @@ router.get('/newPuzzle', fetchGameSession, async (req, res) => {
 });
 
 // Submit a puzzle result (sessionId fetched from cookie)
-router.post('/puzzleResult', fetchGameSession, async (req, res) => {
+router.post('/solvePuzzle', fetchGameSession, async (req, res) => {
+
     const session = req.session; 
     const { puzzleId, selectedLine } = req.body;
 
@@ -80,11 +80,11 @@ router.post('/puzzleResult', fetchGameSession, async (req, res) => {
         // Check if the puzzle has already been solved
         const existingPuzzle = session.puzzles.find(p => p.puzzleId === puzzleId);
         if (existingPuzzle) {
-            return res.status(400).json({ error: 'This puzzle has already been solved in this session.' });
+            return res.status(400).json({ error: 'This puzzle has already been attempted in this session.' });
         }
 
         // Fetch the puzzle to verify the solution
-        const puzzle = await Puzzle.findById(puzzleId);
+        const puzzle = await Puzzle.findOne({ _id: { $eq: puzzleId } });
         if (!puzzle) {
             return res.status(404).json({ error: 'Puzzle not found' });
         }
