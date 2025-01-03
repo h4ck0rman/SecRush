@@ -84,7 +84,7 @@ router.post('/solvePuzzle', fetchGameSession, async (req, res) => {
         }
 
         // Fetch the puzzle to verify the solution
-        const puzzle = await Puzzle.findById(puzzleId);
+        const puzzle = await Puzzle.findOne({ _id: { $eq: puzzleId } });
         if (!puzzle) {
             return res.status(404).json({ error: 'Puzzle not found' });
         }
