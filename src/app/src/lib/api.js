@@ -1,6 +1,6 @@
 export async function startSession() {
     try {
-        const backend = "https://it99x8tes7.execute-api.us-east-1.amazonaws.com";
+        const backend = "https://urw2bcffsg.execute-api.us-east-1.amazonaws.com";
         // Make a POST request to the "start session" API endpoint
         const response = await fetch(backend + '/gameSession/newSession', {
             method: 'POST',
