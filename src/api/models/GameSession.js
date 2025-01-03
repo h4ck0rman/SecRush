@@ -39,6 +39,5 @@ const GameSessionSchema = new mongoose.Schema(
 
 // TTL Index: Automatically delete documents after the `expireAt` date
 GameSessionSchema.index({createdAt: 1},{expireAfterSeconds: 3600});
-GameSessionSchema.index({ sessionId: 1 });
 
 module.exports = mongoose.model('GameSession', GameSessionSchema);
