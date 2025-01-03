@@ -9,7 +9,7 @@ provider:
   httpApi:
     cors:
       allowedOrigins:
-        - https://sec-rush.vercel.app/ # Replace with your Vercel frontend URL
+        - https://sec-rush.vercel.app # Replace with your Vercel frontend URL
       allowedHeaders:
         - Content-Type
         - Authorization
