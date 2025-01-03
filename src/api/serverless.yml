@@ -10,6 +10,7 @@ provider:
     MONGODB_URI: ${file(./cloud-deploy-env.yml):MONGODB_URI} # Load environment variables from env.yml
     NODE_ENV: ${file(./cloud-deploy-env.yml):NODE_ENV, 'production'} # Default to 'production' if not set
 
+
 functions:
   app:
     handler: app.handler
@@ -25,4 +26,5 @@ custom:
       region: us-east-1
     prod:
       region: us-west-2
+
 
