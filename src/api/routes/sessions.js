@@ -53,8 +53,8 @@ router.get('/newPuzzle', fetchGameSession, async (req, res) => {
         }
 
         const { _id, code, difficulty, language } = newPuzzle[0];
-
         return res.json({id: _id, code, difficulty, language});
+
 
     } catch (error) {
         console.log(error.message);
@@ -64,6 +64,7 @@ router.get('/newPuzzle', fetchGameSession, async (req, res) => {
 
 // Submit a puzzle result (sessionId fetched from cookie)
 router.post('/solvePuzzle', fetchGameSession, async (req, res) => {
+
     const session = req.session; 
     const { puzzleId, selectedLine } = req.body;
 
