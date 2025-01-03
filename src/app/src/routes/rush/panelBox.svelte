@@ -12,7 +12,8 @@
     let feedbackMessage = ''; // Message to display feedback
     let errorMessage = ''; // Error message for issues
 
-    const backend = 'https://it99x8tes7.execute-api.us-east-1.amazonaws.com';
+    import { PUBLIC_BACKEND } from '$env/static/public';
+    const backend = PUBLIC_BACKEND;
 
     const handleStartGame = async () => {
         try {
