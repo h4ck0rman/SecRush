@@ -14,7 +14,7 @@
     let feedbackMessage = ''; // Message to display feedback
     let errorMessage = ''; // Error message for issues
 
-    const backend = VITE_AWS_BACKEND;
+    const backend = "https://urw2bcffsg.execute-api.us-east-1.amazonaws.com";
 
     const handleStartGame = async () => {
         try {
