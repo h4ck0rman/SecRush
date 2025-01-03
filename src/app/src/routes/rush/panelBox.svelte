@@ -3,6 +3,8 @@
     import PuzzleResult from "./puzzleResult.svelte";
     import MonacoBox from "./monacoBox.svelte";
     import { startSession } from '../../lib/api';
+    import { VITE_AWS_BACKEND } from '$env/static/public';
+
     const profile = "h4ck0rLogo.png";
     
     // state for active puzzle rush session UI
@@ -12,7 +14,7 @@
     let feedbackMessage = ''; // Message to display feedback
     let errorMessage = ''; // Error message for issues
 
-    const backend = 'https://it99x8tes7.execute-api.us-east-1.amazonaws.com';
+    const backend = VITE_AWS_BACKEND;
 
     const handleStartGame = async () => {
         try {
