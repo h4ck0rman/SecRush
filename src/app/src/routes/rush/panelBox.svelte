@@ -12,6 +12,8 @@
     let feedbackMessage = ''; // Message to display feedback
     let errorMessage = ''; // Error message for issues
 
+    const backend = 'https://it99x8tes7.execute-api.us-east-1.amazonaws.com';
+
     const handleStartGame = async () => {
         try {
             const sessionId = await startSession();
@@ -44,7 +46,7 @@
         }
 
         try {
-            const response = await fetch('http://localhost:9999/gameSession/solvePuzzle', {
+            const response = await fetch(backend + '/gameSession/solvePuzzle', {
                 method: 'POST',
                 credentials: 'include', // Include cookies
                 headers: {
@@ -57,7 +59,9 @@
             });
 
             if (!response.ok) {
-                throw new Error(`Failed to solve puzzle: ${response.text}`);
+                // Await the response text or JSON to get the actual error message
+                const errorData = await response.json();  // Use text() if the server sends plain text
+                throw new Error(`Failed to solve puzzle: ${errorData.error || 'Unknown error'}`);
             }
 
             // Parse the response
@@ -92,13 +96,15 @@
 
     const newPuzzle = async () => {
         try {
-            const response = await fetch('http://localhost:9999/gameSession/newPuzzle', {
+            const response = await fetch(backend + '/gameSession/newPuzzle', {
                 method: 'GET',
                 credentials: 'include', // Include cookies in the request
             });
 
             if (!response.ok) {
-                throw new Error(`Failed to fetch puzzle: ${response.text}`);
+                // Await the response text or JSON to get the actual error message
+                const errorData = await response.json();  // Use text() if the server sends plain text
+                throw new Error(`Failed to solve puzzle: ${errorData.error || 'Unknown error'}`);
             }
 
             const data = await response.json();

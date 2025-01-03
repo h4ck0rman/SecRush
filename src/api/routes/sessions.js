@@ -79,7 +79,7 @@ router.post('/solvePuzzle', fetchGameSession, async (req, res) => {
         // Check if the puzzle has already been solved
         const existingPuzzle = session.puzzles.find(p => p.puzzleId === puzzleId);
         if (existingPuzzle) {
-            return res.status(400).json({ error: 'This puzzle has already been solved in this session.' });
+            return res.status(400).json({ error: 'This puzzle has already been attempted in this session.' });
         }
 
         // Fetch the puzzle to verify the solution

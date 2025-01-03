@@ -3,7 +3,7 @@ node_modules
 
 # s3cr3t f1l3s
 .env
-config.json
+cloud-deploy-env.yml
 
-./.serverless/
+.serverless/
 

@@ -7,20 +7,22 @@ provider:
   runtime: nodejs18.x
   region: us-east-1
   environment:
-    MONGODB_URI: ${env:MONGODB_URL}
-    NODE_ENV: ${env:NODE_ENV, 'production'} # Default to 'development' if NODE_ENV is not set
+    MONGODB_URI: ${file(./cloud-deploy-env.yml):MONGODB_URI} # Load environment variables from env.yml
+    NODE_ENV: ${file(./cloud-deploy-env.yml):NODE_ENV, 'production'} # Default to 'production' if not set
 
 functions:
   app:
     handler: app.handler
     events:
       - httpApi:
-          path: /{proxy+} # Serves all routes under /gameSession
+          path: /{proxy+} # Serve all routes
           method: any
 
-plugins:
-  - serverless-dotenv-plugin # Ensures environment variables from .env are loaded
-
 custom:
-  dotenv:
-    path: .env # Specify the .env file location
+  # Optional custom variables or configuration
+  stages:
+    dev:
+      region: us-east-1
+    prod:
+      region: us-west-2
+
