@@ -13,6 +13,11 @@ const PuzzleSchema = new mongoose.Schema(
             type: String, 
             required: true 
         }, 
+        language: { 
+            type: String, 
+            required: true 
+        }, 
+
         // 1-based index of the vulnerable line
         vulnerableLine: { 
             type: Number, 
