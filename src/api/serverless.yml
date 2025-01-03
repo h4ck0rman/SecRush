@@ -6,6 +6,20 @@ provider:
   name: aws
   runtime: nodejs18.x
   region: us-east-1
+  httpApi:
+    cors:
+      allowedOrigins:
+        - https://sec-rush.vercel.app/ # Replace with your Vercel frontend URL
+      allowedHeaders:
+        - Content-Type
+        - Authorization
+      allowedMethods:
+        - GET
+        - POST
+        - PUT
+        - DELETE
+        - OPTIONS
+      allowCredentials: true # If your frontend requires cookies or credentials
   environment:
     MONGODB_URI: ${file(./cloud-deploy-env.yml):MONGODB_URI} # Load environment variables from env.yml
     NODE_ENV: ${file(./cloud-deploy-env.yml):NODE_ENV, 'production'} # Default to 'production' if not set
