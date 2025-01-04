@@ -3,7 +3,6 @@
     import PuzzleResult from "./puzzleResult.svelte";
     import MonacoBox from "./monacoBox.svelte";
     import { startSession } from '../../lib/api';
-    import { VITE_AWS_BACKEND } from '$env/static/public';
 
     const profile = "h4ck0rLogo.png";
     
