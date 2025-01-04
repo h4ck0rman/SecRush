@@ -1,7 +1,7 @@
 
 export async function startSession() {
     try {
-        const backend = import.meta.env.VITE_PUBLIC_API_DOMAIN;
+        const backend = process.env.VITE_PUBLIC_API_DOMAIN;
         console.log('Backend Server: ', backend);
         // Make a POST request to the "start session" API endpoint
         const response = await fetch(backend + '/gameSession/newSession', {
