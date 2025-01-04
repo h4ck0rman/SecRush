@@ -3,7 +3,6 @@
     import PuzzleResult from "./puzzleResult.svelte";
     import MonacoBox from "./monacoBox.svelte";
     import { startSession } from '../../lib/api';
-    import { VITE_AWS_BACKEND } from '$env/static/public';
 
     const profile = "h4ck0rLogo.png";
     
@@ -124,58 +123,85 @@
     
 </script>
 
-
-<div class='flex flex-row w-screen h-screen rounded-lg'>
-    <div class="absolute top-0 left-0 py-10 px-10">
-        <a href="/">
-            <p class="text-3xl text-white font-bold">{'←'}</p>
-        </a>
-    </div>
-
-    <span class='basis-1/4'>
-        <div class="container flex flex-col space-y-10 py-10 bg-zinc-900 h-full">
-            <img src={profile} alt="profile of user" class="w-24 py-10 mx-auto"/>
-            
-        
+  
+<!-- Outer Container -->
+<div class="flex flex-col w-screen h-screen bg-gray-800 text-white rounded-lg">
+  
+    <!-- Header -->
+    <header class="flex items-center justify-between px-4 py-3 bg-zinc-900">
+      <!-- Logo and App Name -->
+      <div class="flex items-center space-x-2">
+        <img src="{profile}" alt="Logo" class="w-10 h-10 rounded-full" />
+        <p class="text-xl font-mono font-bold">SecRush</p>
+      </div>
+      <!-- Back Button -->
+      <a href="/" class="text-3xl font-bold hover:text-gray-300">
+        ←
+      </a>
+    </header>
+    
+    <!-- Main Content Area -->
+    <div class="flex flex-col md:flex-row flex-1 overflow-hidden">
+  
+      <!-- Monaco Code Box -->
+      <main class="flex-1 overflow-auto bg-gray-90033">
+        <MonacoBox bind:updateContent={codeUpdate} class="w-full h-full" />
+      </main>
+    
+      <!-- Footer / Sidebar -->
+      <footer class="bg-zinc-900 p-4 md:order-first md:w-1/4 md:py-20 flex flex-col">
+  
+        <!-- Spacer to Push Content to Bottom on Mobile -->
+        <div class="flex flex-col flex-grow space-y-4">
+  
+          <!-- Game Controls and Buttons -->
+          <div class="flex flex-col space-y-4">
+  
             {#if !rushActive}
-            
-            <button on:click={handleStartGame} class=" mx-auto bg-transparent hover:bg-white text-white font-semibold hover:text-black py-2 px-4 border border-white hover:border-transparent rounded">Start Rush</button>
-            
+              <!-- Start Rush Button -->
+              <button
+                on:click={handleStartGame}
+                class="mx-auto bg-transparent hover:bg-white text-white font-semibold hover:text-black py-2 px-4 border border-white hover:border-transparent rounded"
+              >
+                Start Rush
+              </button>
             {:else}
-            <div>
-                <form class="px-10 py-5 mx-auto flex flex-col">
-                    <input
-                        type="number"
-                        id="number-input"
-                        bind:value={selectedLine}
-                        aria-describedby="helper-text-explanation"
-                        class="bg-zinc-900 border border-zinc-300 text-gray-900 text-sm rounded  focus:border-gray-100 block w-full p-2.5 dark:bg-gray-900 dark:border-zinc-300 dark:placeholder-gray-400 dark:text-white dark:focus:ring-gray-100 dark:focus:border-gray-100"
-                        placeholder="Enter line number"
-                    />
-                    <div class="w-full flex space-x-2 flex-row py-2">
-                        <button 
-                            on:click={solvePuzzle} 
-                            class="flex-1 px-4 py-2 h-full text-gray-300 font-light border border-gray-300 rounded hover:bg-white hover:text-black hover:border-transparent transition">
-                            Submit
-                        </button>
-                        <button 
-                            on:click={newPuzzle} 
-                            class="flex-1 px-4 py-2 h-full text-gray-300 font-light border border-gray-300 rounded hover:bg-white hover:text-black hover:border-transparent transition">
-                            New Puzzle
-                        </button>
-                    </div>
-                    
-                    
+              <!-- Active Game Controls -->
+              <div class="flex flex-col space-y-4">
+                <form class="flex flex-col space-y-2">
+                  <input
+                    type="number"
+                    id="number-input"
+                    bind:value={selectedLine}
+                    aria-describedby="helper-text-explanation"
+                    class="bg-zinc-800 border border-zinc-300 text-gray-100 text-sm rounded focus:border-gray-100 block w-full p-2.5"
+                    placeholder="Enter line number"
+                  />
+                  <div class="flex space-x-2">
+                    <button
+                      type="button"
+                      on:click={solvePuzzle}
+                      class="flex-1 px-4 py-2 text-gray-300 font-light border border-gray-300 rounded hover:bg-white hover:text-black hover:border-transparent transition"
+                    >
+                      Submit
+                    </button>
+                    <button
+                      type="button"
+                      on:click={newPuzzle}
+                      class="flex-1 px-4 py-2 text-gray-300 font-light border border-gray-300 rounded hover:bg-white hover:text-black hover:border-transparent transition"
+                    >
+                      New Puzzle
+                    </button>
+                  </div>
                 </form>
                 <PuzzleResult results={puzzles} />
-            </div>
+              </div>
             {/if}
-
-        </div>      
-    </span>
-
-
-    <span class='basis-3/4'><MonacoBox bind:updateContent={codeUpdate}/></span>
-
-
-</div>
+          </div>
+  
+        </div>
+  
+      </footer>
+    </div>
+  </div>
+  
