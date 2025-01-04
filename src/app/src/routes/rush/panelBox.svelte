@@ -14,7 +14,7 @@
     let feedbackMessage = ''; // Message to display feedback
     let errorMessage = ''; // Error message for issues
 
-    const backend = "https://urw2bcffsg.execute-api.us-east-1.amazonaws.com";
+    const backend = "https://api.sec-rush.com";
 
     const handleStartGame = async () => {
         try {
