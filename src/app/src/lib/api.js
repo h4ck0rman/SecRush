@@ -1,7 +1,8 @@
 export async function startSession() {
     try {
+        const backend = "https://api.sec-rush.com";
         // Make a POST request to the "start session" API endpoint
-        const response = await fetch('http://localhost:9999/gameSession/newSession', {
+        const response = await fetch(backend + '/gameSession/newSession', {
             method: 'POST',
             credentials: 'include', // Ensures cookies are included in the request/response
         });

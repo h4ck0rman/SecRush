@@ -8,7 +8,7 @@ const RateLimit = require('express-rate-limit');
 
 require('dotenv').config(); 
 
-
+const allowedOrigins = ['https://sec-rush.vercel.app'];
 
 const gameSessionRoutes = require('./routes/sessions');
 // initialise the application
@@ -23,11 +23,6 @@ const limiter = RateLimit({
   max: 100, // max 100 requests per windowMs
 });
 
-// CORS configuration
-const corsOptions = {
-    origin: 'http://localhost:5173', // Allow only your Svelte app's origin
-    credentials: true, // Allow cookies to be sent
-};
 
 mongoose.set('sanitizeFilter', true);
 
@@ -36,8 +31,19 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(limiter);
 app.use(mongoSanitize());
-app.use(cors(corsOptions));
-
+app.use(cors({
+    origin: function (origin, callback) {
+        // Allow requests from allowed origins only
+        if (!origin || allowedOrigins.includes(origin)) {
+            callback(null, true);
+        } else {
+            callback(new Error('Not allowed by CORS'));
+        }
+    },
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'], // Allowed HTTP methods
+    allowedHeaders: ['Content-Type', 'Authorization'],   // Allowed headers
+    credentials: true                                    // Allow cookies or credentials
+  }));
 // Replace prohibited characters instead of removing them (optional)
 app.use(
     mongoSanitize({

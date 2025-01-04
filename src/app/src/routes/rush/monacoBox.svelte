@@ -34,6 +34,7 @@
         value: "\n// Waiting to begin Puzzle Rush...\n",
         language: "java",
         theme: "vs-dark",
+        wordWrap: true,
         readOnly: true,
         });
 

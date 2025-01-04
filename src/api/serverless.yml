@@ -20,19 +20,21 @@ provider:
         - DELETE
         - OPTIONS
       allowCredentials: true
+  logs:
+    restApi: false
+
   environment:
     MONGODB_URI: ${file(./cloud-deploy-env.yml):MONGODB_URI} # Load environment variables from env.yml
     NODE_ENV: ${file(./cloud-deploy-env.yml):NODE_ENV, 'production'} # Default to 'production' if not set
-
 
 functions:
   app:
     handler: app.handler
     events:
-      - httpApi:
-          path: /{proxy+} # Serve all routes
+      - http:
+          path: /{proxy+} # Capture all routes
           method: any
-          
+
 custom:
   # Optional custom variables or configuration
   stages:
