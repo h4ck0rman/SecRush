@@ -10,7 +10,7 @@ require('dotenv').config();
 const gameSessionRoutes = require('./routes/sessions');
 const connectDB = require('./database');
 
-const allowedOrigins = ['https://sec-rush.vercel.app'];
+const allowedOrigins = ['https://sec-rush.com', 'https://www.sec-rush.com'];
 
 // Initialise the application
 const app = express();

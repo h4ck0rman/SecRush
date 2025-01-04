@@ -25,7 +25,7 @@ router.post('/newSession', async (req, res) => {
             httpOnly: true, // Prevent client-side JavaScript access
             maxAge: 60 * 60 * 1000, // Cookie expires in 1 day
             secure: true,
-            sameSite: 'None',
+            sameSite: 'strict',
         });
 
         res.status(201).json({ message: 'Game session started', sessionId });
