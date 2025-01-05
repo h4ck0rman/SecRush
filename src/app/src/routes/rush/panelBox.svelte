@@ -123,85 +123,80 @@
     
 </script>
 
-  
+
 <!-- Outer Container -->
-<div class="flex flex-col w-screen h-screen bg-gray-800 text-white rounded-lg">
-  
+<div class="relative flex flex-col w-screen h-screen bg-gray-800 text-white rounded-lg">
+
     <!-- Header -->
-    <header class="flex items-center justify-between px-4 py-3 bg-zinc-900">
-      <!-- Logo and App Name -->
-      <div class="flex items-center space-x-2">
-        <img src="{profile}" alt="Logo" class="w-10 h-10 rounded-full" />
-        <p class="text-xl font-mono font-bold">SecRush</p>
-      </div>
-      <!-- Back Button -->
-      <a href="/" class="text-3xl font-bold hover:text-gray-300">
-        ←
-      </a>
+    <header class="flex items-center justify-between px-4 py-3 bg-zinc-900 flex-shrink-0">
+        <!-- Logo and App Name -->
+        <div class="flex items-center space-x-2">
+            <img src="{profile}" alt="Logo" class="w-10 h-10 rounded-full" />
+            <p class="text-xl font-mono font-bold">SecRush</p>
+        </div>
+        <!-- Back Button -->
+        <a href="/" class="text-3xl font-bold hover:text-gray-300">
+            ←
+        </a>
     </header>
     
     <!-- Main Content Area -->
-    <div class="flex flex-col md:flex-row flex-1 overflow-hidden">
-  
-      <!-- Monaco Code Box -->
-      <main class="flex-1 overflow-auto bg-gray-90033">
-        <MonacoBox bind:updateContent={codeUpdate} class="w-full h-full" />
-      </main>
-    
-      <!-- Footer / Sidebar -->
-      <footer class="bg-zinc-900 p-4 md:order-first md:w-1/4 md:py-20 flex flex-col">
-  
-        <!-- Spacer to Push Content to Bottom on Mobile -->
-        <div class="flex flex-col flex-grow space-y-4">
-  
-          <!-- Game Controls and Buttons -->
-          <div class="flex flex-col space-y-4">
-  
-            {#if !rushActive}
-              <!-- Start Rush Button -->
-              <button
-                on:click={handleStartGame}
-                class="mx-auto bg-transparent hover:bg-white text-white font-semibold hover:text-black py-2 px-4 border border-white hover:border-transparent rounded"
-              >
-                Start Rush
-              </button>
-            {:else}
-              <!-- Active Game Controls -->
-              <div class="flex flex-col space-y-4">
-                <form class="flex flex-col space-y-2">
-                  <input
-                    type="number"
-                    id="number-input"
-                    bind:value={selectedLine}
-                    aria-describedby="helper-text-explanation"
-                    class="bg-zinc-800 border border-zinc-300 text-gray-100 text-sm rounded focus:border-gray-100 block w-full p-2.5"
-                    placeholder="Enter line number"
-                  />
-                  <div class="flex space-x-2">
+    <div class="flex flex-col flex-grow md:flex-row overflow-hidden">
+
+        <!-- Monaco Code Box -->
+        <main class="flex-grow overflow-auto bg-gray-900">
+            <MonacoBox bind:updateContent={codeUpdate} class="w-full h-full" />
+        </main>
+      
+        <!-- Footer -->
+        <footer class="absolute bottom-0 left-0 w-full md:relative md:order-first md:w-1/4 md:py-20 bg-zinc-900 p-4 flex flex-col">
+
+            <!-- Game Controls and Buttons -->
+            <div class="flex flex-col space-y-4">
+
+                {#if !rushActive}
+                    <!-- Start Rush Button -->
                     <button
-                      type="button"
-                      on:click={solvePuzzle}
-                      class="flex-1 px-4 py-2 text-gray-300 font-light border border-gray-300 rounded hover:bg-white hover:text-black hover:border-transparent transition"
+                        on:click={handleStartGame}
+                        class="mx-auto bg-transparent hover:bg-white text-white font-semibold hover:text-black py-2 px-4 border border-white hover:border-transparent rounded"
                     >
-                      Submit
+                        Start Rush
                     </button>
-                    <button
-                      type="button"
-                      on:click={newPuzzle}
-                      class="flex-1 px-4 py-2 text-gray-300 font-light border border-gray-300 rounded hover:bg-white hover:text-black hover:border-transparent transition"
-                    >
-                      New Puzzle
-                    </button>
-                  </div>
-                </form>
-                <PuzzleResult results={puzzles} />
-              </div>
-            {/if}
-          </div>
-  
-        </div>
-  
-      </footer>
+                {:else}
+                    <!-- Active Game Controls -->
+                    <div class="flex flex-col space-y-4">
+                        <form class="flex flex-col space-y-2">
+                            <input
+                                type="number"
+                                id="number-input"
+                                bind:value={selectedLine}
+                                aria-describedby="helper-text-explanation"
+                                class="bg-zinc-800 border border-zinc-300 text-gray-100 text-sm rounded focus:border-gray-100 block w-full p-2.5"
+                                placeholder="Enter line number"
+                            />
+                            <div class="flex space-x-2">
+                                <button
+                                    type="button"
+                                    on:click={solvePuzzle}
+                                    class="flex-1 px-4 py-2 text-gray-300 font-light border border-gray-300 rounded hover:bg-white hover:text-black hover:border-transparent transition"
+                                >
+                                    Submit
+                                </button>
+                                <button
+                                    type="button"
+                                    on:click={newPuzzle}
+                                    class="flex-1 px-4 py-2 text-gray-300 font-light border border-gray-300 rounded hover:bg-white hover:text-black hover:border-transparent transition"
+                                >
+                                    New Puzzle
+                                </button>
+                            </div>
+                        </form>
+                        <!-- PuzzleResult Component -->
+                        <PuzzleResult results={puzzles} />
+                    </div>
+                {/if}
+            </div>
+
+        </footer>
     </div>
-  </div>
-  
+</div>
