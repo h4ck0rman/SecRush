@@ -40,11 +40,10 @@
         language: "java",
         theme: "vs-dark",
         readOnly: true,
-        domReadOnly: true,
         fontSize: 16
         });
 
-        editor.onDidMouseDown(handleMouseDown);
+        editor.onMouseDown(handleMouseDown);
     });
 
     function handleMouseDown(e) {
