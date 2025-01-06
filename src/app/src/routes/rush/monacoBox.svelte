@@ -40,10 +40,12 @@
         language: "java",
         theme: "vs-dark",
         readOnly: true,
-        fontSize: 16
+        selectOnLineNumbers: true,
+        fontSize: 18
         });
 
         editor.onMouseDown(handleMouseDown);
+        editor.onDidChangeCursorSelection(handleSelectionChange);
     });
 
     function handleMouseDown(e) {
@@ -56,6 +58,27 @@
     
             // Highlight the clicked line
             highlightLine(lineNumber);
+        }
+    }
+
+    function handleSelectionChange(e) {
+        const selection = e.selection;
+
+        // Check if the selection is collapsed (caret only)
+        if (selection.isEmpty()) {
+            const lineNumber = selection.startLineNumber;
+
+            // Highlight the clicked line
+            highlightLine(lineNumber);
+
+            // Dispatch the line number
+            dispatch('lineClick', { lineNumber });
+        } else {
+            // Optionally, handle selections spanning multiple lines
+            const lineNumber = selection.startLineNumber;
+
+            highlightLine(lineNumber);
+            dispatch('lineClick', { lineNumber });
         }
     }
 
