@@ -188,7 +188,7 @@
                     id="number-input"
                     bind:value={selectedLine}
                     aria-describedby="helper-text-explanation"
-                    class="bg-zinc-800 border border-zinc-300 text-gray-100 text-sm rounded focus:border-gray-100 block w-full p-2.5"
+                    class="bg-zinc-800 border border-zinc-300 text-gray-100 text-base rounded focus:border-gray-100 block w-full p-2.5"
                     placeholder="Enter line number"
                   />
                   <div class="flex space-x-2">
