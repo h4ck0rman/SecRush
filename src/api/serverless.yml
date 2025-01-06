@@ -4,27 +4,39 @@ service: serverless-app
 
 provider:
   name: aws
-  runtime: nodejs18.x
+  runtime: nodejs20.x
   region: us-east-1
   logs:
     restApi: false
   environment:
-    MONGODB_URI: ${file(./cloud-deploy-env.yml):MONGODB_URI} # Load environment variables from env.yml
-    NODE_ENV: ${file(./cloud-deploy-env.yml):NODE_ENV, 'production'} # Default to 'production' if not set
+    MONGODB_URI: ${file(./cloud-deploy-env.yml):MONGODB_URI}
+    NODE_ENV: ${file(./cloud-deploy-env.yml):NODE_ENV, 'production'}
 
 functions:
   app:
-    handler: dist/app.handler # Path to the bundled handler
+    handler: dist/app.handler
     events:
       - http:
-          path: /{proxy+} # Capture all routes
+          path: /{proxy+}
           method: any
+          cors:
+            origin:
+              - 'https://sec-rush.com'
+              - 'https://www.sec-rush.com'
+            headers:
+              - Content-Type
+              - Authorization
+              - X-Requested-With
+              - Accept
+              - Origin
+              - Access-Control-Allow-Origin
+              - Access-Control-Allow-Credentials
+            allowCredentials: true
 
 package:
-  individually: true # Packages each function individually (good for optimized deployment)
+  individually: true
   patterns:
-    - dist/** # Include only the dist directory
-    - cloud-deploy-env.yml # Include environment variable file
-    - "!node_modules/**" # Exclude node_modules (if not needed by the Lambda runtime)
-    - "!**/*.spec.js" # Exclude test files
-    - "!**/*.log" # Exclude log files
+    - dist/**
+    - cloud-deploy-env.yml
+    - "!.env"
+    - "!**/*.log"
