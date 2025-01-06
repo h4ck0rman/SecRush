@@ -42,7 +42,7 @@
         readOnly: true,
         domReadOnly: true,
         selectOnLineNumbers: true,
-        fontSize: 18
+        fontSize: 16
         });
 
         editor.onMouseDown(handleMouseDown);
