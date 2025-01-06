@@ -8,7 +8,7 @@ const RateLimit = require('express-rate-limit');
 
 require('dotenv').config(); 
 
-const allowedOrigins = ['https://sec-rush.vercel.app'];
+const allowedOrigins = ['http://localhost:5173'];
 
 const gameSessionRoutes = require('./routes/sessions');
 // initialise the application

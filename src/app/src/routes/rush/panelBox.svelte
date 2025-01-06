@@ -3,15 +3,19 @@
     import PuzzleResult from "./puzzleResult.svelte";
     import MonacoBox from "./monacoBox.svelte";
     import { startSession } from '../../lib/api';
+    import { onMount } from 'svelte';
 
     const profile = "h4ck0rLogo.png";
-    
+    const loadingGif = "loading.gif";
     // state for active puzzle rush session UI
     export let rushActive = false;
     let currentPuzzle = null; // Store the current puzzle
     let selectedLine = null; // User's selected line
     let feedbackMessage = ''; // Message to display feedback
     let errorMessage = ''; // Error message for issues
+    let loading = false;
+    let newPuzzleLoading = false;
+    let solvePuzzleLoading = false;
 
     const backend = "https://api.sec-rush.com";
 
@@ -29,6 +33,12 @@
         }
     };
 
+    onMount(() => {
+        loading = true;
+        
+        handleStartGame();
+        loading = false;
+    });
 
     // Example function to substitute for backend response
     let puzzles = [];
@@ -39,10 +49,11 @@
     let language = 'python';
     
     const solvePuzzle = async () => {
-        console.log(selectedLine);
+        solvePuzzleLoading = true;
 
         if (!selectedLine || selectedLine <= 0) {
             feedbackMessage = 'Please select a valid line number to solve the puzzle.';
+            solvePuzzleLoading = false;
             return;
         }
 
@@ -58,7 +69,7 @@
                     selectedLine, // Line selected by the user
                 }),
             });
-
+            
             if (!response.ok) {
                 // Await the response text or JSON to get the actual error message
                 const errorData = await response.json();  // Use text() if the server sends plain text
@@ -86,16 +97,19 @@
             console.log('Solve Puzzle Response:', data);
 
             // Reset the selected line for the next puzzle
-            selectedLine = null;
             
         } catch (error) {
             console.error('Error solving puzzle:', error);
             errorMessage = 'Failed to submit your solution. Please try again later.';
+        } finally {
+            selectedLine = null;
+            solvePuzzleLoading = false;
         }
     };
 
 
     const newPuzzle = async () => {
+        newPuzzleLoading = true;
         try {
             const response = await fetch(backend + '/gameSession/newPuzzle', {
                 method: 'GET',
@@ -117,12 +131,21 @@
             codeUpdate(code, language);
         } catch (error) {
             console.error('Error fetching next puzzle:', error);
+        } finally {
+            newPuzzleLoading = false;
         }
         
     };
     
 </script>
 
+{#if loading }
+    <div class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+        <div class=" p-6 rounded-lg shadow-lg flex flex-col items-center">
+            <img src="{loadingGif}" alt="Loading..." class="w-18 h-12 mb-4" />
+        </div>
+    </div>
+{/if}
   
 <!-- Outer Container -->
 <div class="flex flex-col w-screen h-dvh bg-gray-800 text-white rounded-lg">
@@ -156,16 +179,7 @@
   
           <!-- Game Controls and Buttons -->
           <div class="flex flex-col space-y-4">
-  
-            {#if !rushActive}
-              <!-- Start Rush Button -->
-              <button
-                on:click={handleStartGame}
-                class="mx-auto bg-transparent hover:bg-white text-white font-semibold hover:text-black py-2 px-4 border border-white hover:border-transparent rounded"
-              >
-                Start Rush
-              </button>
-            {:else}
+
               <!-- Active Game Controls -->
               <div class="flex flex-col space-y-4">
                 <form class="flex flex-col space-y-2">
@@ -179,24 +193,35 @@
                   />
                   <div class="flex space-x-2">
                     <button
-                      type="button"
-                      on:click={solvePuzzle}
-                      class="flex-1 px-4 py-2 text-gray-300 font-light border border-gray-300 rounded hover:bg-white hover:text-black hover:border-transparent transition"
+                        type="button"
+                        on:click={solvePuzzle}
+                        class="flex-1 px-4 py-2 text-gray-300 font-light border border-gray-300 rounded  hover:bg-white hover:text-black hover:border-transparent transition flex items-center justify-center"
+                        disabled={solvePuzzleLoading} 
                     >
-                      Submit
+                        {#if solvePuzzleLoading}
+                            <img src="{loadingGif}" alt="Loading..." class="w-5 h-5" />
+                        {:else}
+                            Submit
+                        {/if}
                     </button>
+
                     <button
-                      type="button"
-                      on:click={newPuzzle}
-                      class="flex-1 px-4 py-2 text-gray-300 font-light border border-gray-300 rounded hover:bg-white hover:text-black hover:border-transparent transition"
+                        type="button"
+                        on:click={newPuzzle}
+                        class="flex-1 px-4 py-2 text-gray-300 font-light border border-gray-300 rounded  hover:bg-white hover:text-black hover:border-transparent transition flex items-center justify-center"
+                        disabled={newPuzzleLoading} 
                     >
-                      New Puzzle
+                        {#if newPuzzleLoading}
+                            <img src="{loadingGif}" alt="Loading..." class="w-5 h-5" />
+                        {:else}
+                            Next Puzzle
+                        {/if}
                     </button>
                   </div>
                 </form>
                 <PuzzleResult results={puzzles} />
               </div>
-            {/if}
+
           </div>
   
         </div>

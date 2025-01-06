@@ -14,11 +14,17 @@ provider:
 
 functions:
   app:
-    handler: app.handler
+    handler: dist/app.handler # Path to the bundled handler
     events:
       - http:
           path: /{proxy+} # Capture all routes
           method: any
 
-
-
+package:
+  individually: true # Packages each function individually (good for optimized deployment)
+  patterns:
+    - dist/** # Include only the dist directory
+    - cloud-deploy-env.yml # Include environment variable file
+    - "!node_modules/**" # Exclude node_modules (if not needed by the Lambda runtime)
+    - "!**/*.spec.js" # Exclude test files
+    - "!**/*.log" # Exclude log files
