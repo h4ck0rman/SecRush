@@ -17,7 +17,7 @@
     let newPuzzleLoading = false;
     let solvePuzzleLoading = false;
 
-    const backend = import.meta.env.VITE_PUBLIC_API_DOMAIN ?? "https://api.sec-rush.com";;
+    const backend = "https://api.sec-rush.com";;
 
     const handleStartGame = async () => {
         try {
