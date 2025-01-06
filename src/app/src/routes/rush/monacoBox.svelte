@@ -40,6 +40,7 @@
         language: "java",
         theme: "vs-dark",
         readOnly: true,
+        domReadOnly: true,
         selectOnLineNumbers: true,
         fontSize: 18
         });
