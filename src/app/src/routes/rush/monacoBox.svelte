@@ -36,6 +36,7 @@
         theme: "vs-dark",
         wordWrap: true,
         readOnly: true,
+        domReadOnly: true,
         fontSize: 16
         });
 
