@@ -7,8 +7,8 @@
 
     const profile = "h4ck0rLogo.png";
     const loadingGif = "loading.gif";
-    // state for active puzzle rush session UI
-    export let rushActive = false;
+    const loadingBGif = "loadingB.gif";
+
     let currentPuzzle = null; // Store the current puzzle
     let selectedLine = null; // User's selected line
     let feedbackMessage = ''; // Message to display feedback
@@ -24,8 +24,6 @@
             const sessionId = await startSession();
             console.log('Session started with ID:', sessionId);
 
-            // Navigate to the puzzle page
-            rushActive = true;
             newPuzzle();
 
         } catch (error) {
@@ -35,8 +33,10 @@
 
     onMount(() => {
         loading = true;
-        
+        console.log('before handle start loading =', loading)
         handleStartGame();
+        
+        console.log('after handle start loading =', loading)
         loading = false;
     });
 
@@ -199,7 +199,7 @@
                         disabled={solvePuzzleLoading} 
                     >
                         {#if solvePuzzleLoading}
-                            <img src="{loadingGif}" alt="Loading..." class="w-5 h-5" />
+                            <img src="{loadingBGif}" alt="Loading..." class="w-1/4" />
                         {:else}
                             Submit
                         {/if}
@@ -212,7 +212,7 @@
                         disabled={newPuzzleLoading} 
                     >
                         {#if newPuzzleLoading}
-                            <img src="{loadingGif}" alt="Loading..." class="w-5 h-5" />
+                            <img src="{loadingBGif}" alt="Loading..." class="w-1/4" />
                         {:else}
                             Next Puzzle
                         {/if}

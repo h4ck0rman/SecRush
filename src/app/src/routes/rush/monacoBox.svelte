@@ -34,7 +34,7 @@
         value: "\n// Waiting for the next puzzle...\n",
         language: "java",
         theme: "vs-dark",
-        wordWrap: "true",
+        wordWrap: true,
         readOnly: true,
         });
 
