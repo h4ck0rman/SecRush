@@ -17,7 +17,7 @@
     let solvePuzzleLoading = false;
     let selectedLine = null;
 
-    const backend = "http://localhost:9999";;
+    const backend = "https://api.sec-rush.com";;
 
     const handleStartGame = async () => {
         try {
