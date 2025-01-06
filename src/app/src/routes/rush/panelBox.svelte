@@ -10,14 +10,14 @@
     const loadingBGif = "loadingB.gif";
 
     let currentPuzzle = null; // Store the current puzzle
-    let selectedLine = null; // User's selected line
     let feedbackMessage = ''; // Message to display feedback
     let errorMessage = ''; // Error message for issues
     let loading = false;
     let newPuzzleLoading = false;
     let solvePuzzleLoading = false;
+    let selectedLine = null;
 
-    const backend = "https://api.sec-rush.com";;
+    const backend = "http://localhost:9999";;
 
     const handleStartGame = async () => {
         try {
@@ -40,6 +40,11 @@
         loading = false;
     });
 
+    function handleLineClick(event) {
+        selectedLine = event.detail.lineNumber;
+        console.log('Clicked Line Number:', selectedLine);
+    }
+
     // Example function to substitute for backend response
     let puzzles = [];
     let count = 1;
@@ -50,7 +55,7 @@
     
     const solvePuzzle = async () => {
         solvePuzzleLoading = true;
-
+        console.log('solve puzzle, linenumber: ', selectedLine);
         if (!selectedLine || selectedLine <= 0) {
             feedbackMessage = 'Please select a valid line number to solve the puzzle.';
             solvePuzzleLoading = false;
@@ -116,7 +121,11 @@
                 credentials: 'include', // Include cookies in the request
             });
 
-            if (!response.ok) {
+            if (response.status === 404) {
+                codeUpdate('\n\nWe Have Run Out Of Puzzles For This Session...\n\nYou Killed It!!!\n\n', 'text');
+                return
+
+            } else if (!response.ok) {
                 // Await the response text or JSON to get the actual error message
                 const errorData = await response.json();  // Use text() if the server sends plain text
                 throw new Error(`Failed to solve puzzle: ${errorData.error || 'Unknown error'}`);
@@ -138,6 +147,15 @@
     };
     
 </script>
+
+<style>
+    /* Optional: Additional styles if needed */
+    button:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+    }
+</style>
+
 
 {#if loading }
     <div class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
@@ -168,7 +186,7 @@
   
       <!-- Monaco Code Box -->
       <main class="flex-1 overflow-auto bg-gray-90033">
-        <MonacoBox bind:updateContent={codeUpdate} class="w-full h-full" />
+        <MonacoBox on:lineClick={handleLineClick} bind:updateContent={codeUpdate} class="w-full h-full" />
       </main>
     
       <!-- Footer / Sidebar -->
@@ -183,14 +201,7 @@
               <!-- Active Game Controls -->
               <div class="flex flex-col space-y-4">
                 <form class="flex flex-col space-y-2">
-                  <input
-                    type="number"
-                    id="number-input"
-                    bind:value={selectedLine}
-                    aria-describedby="helper-text-explanation"
-                    class="bg-zinc-800 border border-zinc-300 text-gray-100 text-base rounded focus:border-gray-100 block w-full p-2.5"
-                    placeholder="Enter line number"
-                  />
+                  
                   <div class="flex space-x-2">
                     <button
                         type="button"
@@ -199,7 +210,7 @@
                         disabled={solvePuzzleLoading} 
                     >
                         {#if solvePuzzleLoading}
-                            <img src="{loadingBGif}" alt="Loading..." class="w-1/4" />
+                            <img src="{loadingBGif}" alt="Loading..." class="h-5 w-auto md:h-6 md:w-auto" />
                         {:else}
                             Submit
                         {/if}
@@ -212,7 +223,7 @@
                         disabled={newPuzzleLoading} 
                     >
                         {#if newPuzzleLoading}
-                            <img src="{loadingBGif}" alt="Loading..." class="w-1/4" />
+                            <img src="{loadingBGif}" alt="Loading..." class="h-5 w-auto md:h-6 md:w-auto" />
                         {:else}
                             Next Puzzle
                         {/if}

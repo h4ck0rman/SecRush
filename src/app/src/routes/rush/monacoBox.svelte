@@ -1,14 +1,19 @@
 <script>
-    import { onDestroy, onMount } from 'svelte';
+    import '../../app.css';
+    import { onDestroy, onMount, createEventDispatcher } from 'svelte';
     import editorWorker from "monaco-editor/esm/vs/editor/editor.worker?worker";
     import jsonWorker from "monaco-editor/esm/vs/language/json/json.worker?worker";
     import cssWorker from "monaco-editor/esm/vs/language/css/css.worker?worker";
     import htmlWorker from "monaco-editor/esm/vs/language/html/html.worker?worker";
     import tsWorker from "monaco-editor/esm/vs/language/typescript/ts.worker?worker";
     
+    const dispatch = createEventDispatcher();
+
     let editorContainer;
     let editor;
     let Monaco;
+
+    let decorationId = [];
     
   onMount(async () => {
     self.MonacoEnvironment = {
@@ -40,8 +45,37 @@
         fontSize: 16
         });
 
+        editor.onMouseDown(handleMouseDown);
     });
 
+    function handleMouseDown(e) {
+        const position = e.target.position;
+        if (position) {
+            const lineNumber = position.lineNumber;
+    
+            // Emit the line number to the parent component
+            dispatch('lineClick', { lineNumber });
+    
+            // Highlight the clicked line
+            highlightLine(lineNumber);
+        }
+    }
+
+    function highlightLine(lineNumber) {
+        // Remove previous decorations
+        decorationId = editor.deltaDecorations(decorationId, []);
+    
+        // Add new decoration for the clicked line with orange highlight
+        decorationId = editor.deltaDecorations([], [
+            {
+                range: new Monaco.Range(lineNumber, 1, lineNumber, 1),
+                options: {
+                    isWholeLine: true,
+                    className: 'orangeLineHighlight', // Applies orange highlight
+                },
+            },
+        ]);
+    }
 
     export function updateContent(code, language) {
         if (editor) {

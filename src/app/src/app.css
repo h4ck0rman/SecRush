@@ -1,3 +1,8 @@
 @import 'tailwindcss/base';
 @import 'tailwindcss/components';
-@import 'tailwindcss/utilities'
+@import 'tailwindcss/utilities';
+
+.orangeLineHighlight {
+    background-color: rgba(255, 165, 0, 0.3); /* Semi-transparent orange */
+    border-left: 3px solid orange; /* Solid orange border on the left */
+}
