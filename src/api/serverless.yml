@@ -33,6 +33,23 @@ functions:
               - Access-Control-Allow-Credentials
             allowCredentials: true
 
+      - http:
+          path: /solvePuzzle
+          method: any
+          cors:
+            origin:
+              - 'https://sec-rush.com'
+              - 'https://www.sec-rush.com'
+            headers:
+              - Content-Type
+              - Authorization
+              - X-Requested-With
+              - Accept
+              - Origin
+              - Access-Control-Allow-Origin
+              - Access-Control-Allow-Credentials
+            allowCredentials: true
+
 package:
   individually: true
   patterns:
