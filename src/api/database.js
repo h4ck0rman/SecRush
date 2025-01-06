@@ -3,10 +3,18 @@ const dotenv = require('dotenv');
 
 dotenv.config();
 
-const connectDB = async () => {
-    try {
+let isConnected;
+const MONGODB_URI = process.env.MONGODB_URI;
 
-        await mongoose.connect(process.env.MONGODB_URL, {dbName: 'secRush'});
+const connectDB = async () => {
+    if (isConnected) {
+        console.log('Using existing MongoDB connection');
+        return;
+    }
+      
+    try {
+        const conn = await mongoose.connect(MONGODB_URI, {dbName: 'secRush'});
+        isConnected = conn.connections[0].readyState;
         console.log('MongoDB connected successfully to SecRush');
 
     } catch (error) {
