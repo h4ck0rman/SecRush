@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "npx esbuild ./app.js --bundle --platform=node --target=node20 --outfile=dist/app.js",
+    "deploy": "npm run build; npx serverless deploy"
   },
   "author": "",
   "license": "ISC",
@@ -16,11 +17,10 @@
     "express-mongo-sanitize": "^2.2.0",
     "express-rate-limit": "^7.4.1",
     "mongoose": "^8.9.0",
-    "serverless-dotenv-plugin": "^6.0.0",
     "serverless-http": "^3.2.0",
     "uuid": "^11.0.3"
   },
   "devDependencies": {
-    "serverless-domain-manager": "^8.0.0"
+    "esbuild": "^0.24.2"
   }
 }
