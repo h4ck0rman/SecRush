@@ -18,6 +18,7 @@
     let selectedLine = null;
     let solvePuzzleDisable = false;
     let monacoRendered;
+    
 
     const backend = import.meta.env.VITE_LOCAL_DOMAIN || "https://api.sec-rush.com";
 
@@ -45,6 +46,14 @@
 
     function handleLineClick(event) {
         selectedLine = event.detail.lineNumber;
+    }
+
+
+    let isPuzzleResultVisible = true;
+
+    // Function to toggle visibility
+    function togglePuzzleResult() {
+        isPuzzleResultVisible = !isPuzzleResultVisible;
     }
 
     // Example function to substitute for backend response
@@ -183,9 +192,12 @@
     <!-- Header -->
     <header class="flex items-center justify-between px-4 py-3 bg-zinc-900">
       <!-- Logo and App Name -->
-      <div class="flex items-center space-x-2">
-        <img src="{profile}" alt="Logo" class="w-10 h-10 rounded-full" />
-        <p class="text-xl font-mono ">secrush</p>
+      <div >
+        <a href="/" class="flex items-center space-x-2">
+            <img src="{profile}" alt="Logo" class="w-10 h-10 rounded-full" />
+            <p class="text-xl font-mono ">secrush</p>
+        </a>
+        
       </div>
       
     </header>
@@ -199,8 +211,25 @@
       </main>
     
       <!-- Footer / Sidebar -->
-      <footer class="bg-zinc-900 p-4 md:order-first md:w-1/4 md:py-20 flex flex-col">
-  
+      <footer class="bg-zinc-900 px-4 pb-4 md:order-first md:w-1/4 md:py-20 flex flex-col relative">
+        <!-- Toggle Button -->
+        <button 
+            on:click={togglePuzzleResult} 
+            class="flex items-center justify-center  bg-opacity-75 hover:bg-opacity-90 text-white rounded-full p-1 focus:outline-none  mb-2 md:mb-4 md:hidden"
+            aria-label={isPuzzleResultVisible ? "Hide Results" : "Show Results"}
+        >
+            {#if isPuzzleResultVisible}
+                <!-- Down Arrow -->
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                </svg>
+            {:else}
+                <!-- Up Arrow -->
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7" />
+                </svg>
+            {/if}
+        </button>
         <!-- Spacer to Push Content to Bottom on Mobile -->
         <div class="flex flex-col flex-grow space-y-4">
   
@@ -208,9 +237,10 @@
           <div class="flex flex-col space-y-4">
 
               <!-- Active Game Controls -->
-              <div class="flex flex-col space-y-4">
-                <PuzzleResult results={puzzles} />
-                <form class="flex flex-col space-y-2 md:order-first">
+              <div class="flex flex-col space-y-1 md:space-y-4">
+                
+                <PuzzleResult results={puzzles} visible={isPuzzleResultVisible} />
+                <form class="flex flex-col md:order-first">
                   
                   <div class="flex space-x-2">
                     <button
