@@ -65,6 +65,11 @@
     let solutionHighlight;
     let language = 'python';
     
+    let showCorrectLogo = false;
+    let showWrongLogo = false;
+
+    const correctLogo = "logos/green_tick.png";
+    const wrongLogo = "logos/red_cross.png";
     const solvePuzzle = async () => {
 
         if (!selectedLine || selectedLine <= 0) {
@@ -72,7 +77,7 @@
             return
         }
 
-        loading = true;
+        
         solvePuzzleLoading = true;
         solvePuzzleDisable = true;
         try {
@@ -112,8 +117,24 @@
                 solvePuzzleDisable = false;
                 newPuzzle();
 
+                // Show the correct logo
+                showCorrectLogo = true;
+
+                // Hide the logo after 1 second
+                setTimeout(() => {
+                    showCorrectLogo = false;
+                }, 1000); // 1000 milliseconds = 1 second
+
             } else {
                 solutionHighlight([{line: correctLine, colour:'green'}, {line: selectedLine, colour:'red'}]);
+            
+                // Show the correct logo
+                showWrongLogo = true;
+
+                // Hide the logo after 1 second
+                setTimeout(() => {
+                    showWrongLogo = false;
+                }, 1000); // 1000 milliseconds = 1 second
             }
 
 
@@ -183,6 +204,18 @@
         <div class=" p-6 rounded-lg shadow-lg flex flex-col items-center">
             <img src="{loadingGif}" alt="Loading..." class="w-18 h-12 mb-4" />
         </div>
+    </div>
+{/if}
+
+{#if showCorrectLogo}
+    <div class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+        <img src="{correctLogo}" alt="Correct Answer" class="w-16 h-16 animate-pulse">
+    </div>
+{/if}
+
+{#if showWrongLogo}
+    <div class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+        <img src="{wrongLogo}" alt="Correct Answer" class="w-16 h-16 animate-pulse">
     </div>
 {/if}
   

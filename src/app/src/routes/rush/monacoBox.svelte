@@ -40,6 +40,8 @@
         value: "\n// Waiting for the next puzzle...\n",
         language: "java",
         theme: "vs-dark",
+        tabSize: 2,
+        insertSpaces: true,
         lineNumbersMinChars: 3,
         glyphMargin: false,
         folding: false,
