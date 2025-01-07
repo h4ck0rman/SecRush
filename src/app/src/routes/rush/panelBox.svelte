@@ -17,7 +17,7 @@
     let solvePuzzleLoading = false;
     let selectedLine = null;
 
-    const backend = "https://api.sec-rush.com";;
+    const backend = import.meta.env.VITE_LOCAL_DOMAIN || "https://api.sec-rush.com";
 
     const handleStartGame = async () => {
         try {
