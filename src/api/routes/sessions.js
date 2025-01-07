@@ -97,7 +97,7 @@ router.post('/solvePuzzle', fetchGameSession, async (req, res) => {
         session.puzzles.push({ puzzleId, selectedLine, correct });
         await session.save();
 
-        res.json({ message: 'Puzzle result recorded successfully', correct, correctLine: puzzle.vulnerableLine });
+        res.json({ message: 'Puzzle result recorded successfully', puzzleId, correct, correctLine: puzzle.vulnerableLine });
 
     } catch (error) {
         console.log(error.message);

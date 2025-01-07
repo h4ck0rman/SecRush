@@ -9,40 +9,43 @@
     const loadingGif = "loading.gif";
     const loadingBGif = "loadingB.gif";
 
-    let currentPuzzle = null; // Store the current puzzle
-    let feedbackMessage = ''; // Message to display feedback
-    let errorMessage = ''; // Error message for issues
+    let currentPuzzle = null; 
+    let feedbackMessage = ''; 
+    let errorMessage = ''; 
     let loading = false;
     let newPuzzleLoading = false;
     let solvePuzzleLoading = false;
     let selectedLine = null;
+    let solvePuzzleDisable = false;
+    let monacoRendered;
 
     const backend = import.meta.env.VITE_LOCAL_DOMAIN || "https://api.sec-rush.com";
 
     const handleStartGame = async () => {
+        loading = true;
         try {
             const sessionId = await startSession();
-            console.log('Session started with ID:', sessionId);
-
-            newPuzzle();
 
         } catch (error) {
             errorMessage = 'Failed to start the session. Please try again later.';
+
+        } finally {
+            loading = false;
         }
     };
 
+    function handleMonacoReady() {
+        // Now that Monaco is ready, fetch the next puzzle
+        newPuzzle();
+    }
+
     onMount(() => {
         loading = true;
-        console.log('before handle start loading =', loading)
         handleStartGame();
-        
-        console.log('after handle start loading =', loading)
-        loading = false;
     });
 
     function handleLineClick(event) {
         selectedLine = event.detail.lineNumber;
-        console.log('Clicked Line Number:', selectedLine);
     }
 
     // Example function to substitute for backend response
@@ -51,27 +54,29 @@
     let score = 0;
 
     let codeUpdate;
+    let solutionHighlight;
     let language = 'python';
     
     const solvePuzzle = async () => {
-        solvePuzzleLoading = true;
-        console.log('solve puzzle, linenumber: ', selectedLine);
+
         if (!selectedLine || selectedLine <= 0) {
-            feedbackMessage = 'Please select a valid line number to solve the puzzle.';
-            solvePuzzleLoading = false;
-            return;
+            console.error('Please select a valid line number to solve the puzzle.');
+            return
         }
 
+        loading = true;
+        solvePuzzleLoading = true;
+        solvePuzzleDisable = true;
         try {
             const response = await fetch(backend + '/gameSession/solvePuzzle', {
                 method: 'POST',
-                credentials: 'include', // Include cookies
+                credentials: 'include', 
                 headers: {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
-                    puzzleId: currentPuzzle, // ID of the current puzzle
-                    selectedLine, // Line selected by the user
+                    puzzleId: currentPuzzle, 
+                    selectedLine, 
                 }),
             });
             
@@ -96,51 +101,59 @@
 
             if (correct) {
                 score += 1;
+                solvePuzzleDisable = false;
                 newPuzzle();
+
+            } else {
+                solutionHighlight([{line: correctLine, colour:'green'}, {line: selectedLine, colour:'red'}]);
             }
 
-            console.log('Solve Puzzle Response:', data);
 
-            // Reset the selected line for the next puzzle
-            
         } catch (error) {
             console.error('Error solving puzzle:', error);
             errorMessage = 'Failed to submit your solution. Please try again later.';
+
         } finally {
             selectedLine = null;
+            loading = false;
             solvePuzzleLoading = false;
+            
         }
     };
 
 
     const newPuzzle = async () => {
+        loading = true;
         newPuzzleLoading = true;
+        solvePuzzleDisable = false;
         try {
             const response = await fetch(backend + '/gameSession/newPuzzle', {
                 method: 'GET',
-                credentials: 'include', // Include cookies in the request
+                credentials: 'include', 
             });
 
             if (response.status === 404) {
                 codeUpdate('\n\nWe Have Run Out Of Puzzles For This Session...\n\nYou Killed It!!!\n\n', 'text');
-                return
+                throw new Error(`Failed to solve puzzle: ${errorData.error || 'Unknown error'}`);
+                
 
             } else if (!response.ok) {
-                // Await the response text or JSON to get the actual error message
-                const errorData = await response.json();  // Use text() if the server sends plain text
+                const errorData = await response.json();  
                 throw new Error(`Failed to solve puzzle: ${errorData.error || 'Unknown error'}`);
             }
 
             const data = await response.json();
 
             currentPuzzle = data.id;
-            const { code, language } = data; // Update the current puzzle with the fetched data
+            const { code, language } = data; 
             
-            console.log('Fetched Puzzle:', currentPuzzle);
             codeUpdate(code, language);
+
         } catch (error) {
             console.error('Error fetching next puzzle:', error);
+
         } finally {
+            loading = false;
             newPuzzleLoading = false;
         }
         
@@ -186,7 +199,7 @@
   
       <!-- Monaco Code Box -->
       <main class="flex-1 overflow-auto bg-gray-90033">
-        <MonacoBox on:lineClick={handleLineClick} bind:updateContent={codeUpdate} class="w-full h-full" />
+        <MonacoBox on:lineClick={handleLineClick} on:ready={handleMonacoReady} bind:updateContent={codeUpdate} bind:solutionHighlight={solutionHighlight} class="w-full h-full" />
       </main>
     
       <!-- Footer / Sidebar -->
@@ -207,7 +220,7 @@
                         type="button"
                         on:click={solvePuzzle}
                         class="flex-1 px-4 py-2 text-gray-300 font-light border border-gray-300 rounded  hover:bg-white hover:text-black hover:border-transparent transition flex items-center justify-center"
-                        disabled={solvePuzzleLoading} 
+                        disabled={solvePuzzleLoading || solvePuzzleDisable} 
                     >
                         {#if solvePuzzleLoading}
                             <img src="{loadingBGif}" alt="Loading..." class="h-5 w-auto md:h-6 md:w-auto" />

@@ -2,7 +2,20 @@
 @import 'tailwindcss/components';
 @import 'tailwindcss/utilities';
 
+/* Orange Line Highlight for Monaco Editor */
 .orangeLineHighlight {
     background-color: rgba(255, 165, 0, 0.3); /* Semi-transparent orange */
     border-left: 3px solid orange; /* Solid orange border on the left */
+}
+
+/* Green Line Highlight for Correct Lines */
+.greenLineHighlight {
+    background-color: rgba(0, 128, 0, 0.3); /* Semi-transparent green */
+    border-left: 3px solid green; /* Solid green border on the left */
+}
+
+/* Red Line Highlight for Incorrect Selections */
+.redLineHighlight {
+    background-color: rgba(255, 0, 0, 0.3); /* Semi-transparent red */
+    border-left: 3px solid red; /* Solid red border on the left */
 }
