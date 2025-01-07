@@ -14,6 +14,7 @@
     let Monaco;
 
     let decorationId = [];
+    let decorationIds = [];
     
   onMount(async () => {
     self.MonacoEnvironment = {
@@ -39,6 +40,9 @@
         value: "\n// Waiting for the next puzzle...\n",
         language: "java",
         theme: "vs-dark",
+        lineNumbersMinChars: 3,
+        glyphMargin: false,
+        folding: false,
         wordWrap: true,
         readOnly: true,
         domReadOnly: true,
