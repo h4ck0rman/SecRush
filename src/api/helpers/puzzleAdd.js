@@ -7,7 +7,7 @@ const dotenv = require('dotenv');
 dotenv.config();
 
 // Import the Puzzle model
-const Puzzle = require('./models/Puzzle'); // Adjust the path as necessary
+const Puzzle = require('../models/Puzzle'); // Adjust the path as necessary
 
 // MongoDB connection URI
 const mongoURI = process.env.MONGODB_URL; // Ensure this is set in your .env file

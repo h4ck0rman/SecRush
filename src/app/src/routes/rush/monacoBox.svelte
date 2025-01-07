@@ -39,12 +39,15 @@
         value: "\n// Waiting for the next puzzle...\n",
         language: "java",
         theme: "vs-dark",
+        wordWrap: true,
         readOnly: true,
         domReadOnly: true,
         selectOnLineNumbers: true,
+        minimap: { enabled: false },
         fontSize: 16
         });
 
+        dispatch('ready');
         editor.onMouseDown(handleMouseDown);
         editor.onDidChangeCursorSelection(handleSelectionChange);
     });
@@ -83,6 +86,23 @@
         }
     }
 
+    export function solutionHighlight(highlights) {
+        // Remove previous decorations
+        decorationId = editor.deltaDecorations(decorationId, []);
+
+        // Create new decorations based on highlights
+        const newDecorations = highlights.map(highlight => ({
+            range: new Monaco.Range(highlight.line, 1, highlight.line, 1),
+            options: {
+                isWholeLine: true,
+                className: getHighlightClass(highlight.colour),
+            },
+        }));
+
+        // Apply the new decorations
+        decorationIds = editor.deltaDecorations([], newDecorations);
+    }
+
     function highlightLine(lineNumber) {
         // Remove previous decorations
         decorationId = editor.deltaDecorations(decorationId, []);
@@ -99,6 +119,18 @@
         ]);
     }
 
+    function getHighlightClass(colour) {
+        switch(colour) {
+            case 'green':
+                return 'greenLineHighlight';
+            case 'red':
+                return 'redLineHighlight';
+            case 'orange':
+            default:
+                return 'orangeLineHighlight';
+        }
+    }
+
     export function updateContent(code, language) {
         if (editor) {
             const model = Monaco.editor.createModel(
@@ -106,6 +138,7 @@
                 language
             );
             editor.setModel(model);
+
         }
     };
 
