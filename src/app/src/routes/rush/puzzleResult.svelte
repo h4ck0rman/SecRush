@@ -5,12 +5,13 @@
 </script>
 
 <!-- Container -->
-<div class="flex flex-nowrap md:flex-wrap overflow-x-auto md:overflow-x-visible w-full px-5">
+<div class="flex flex-nowrap md:flex-wrap overflow-x-auto md:overflow-x-visible w-full px-3 md:px-5 md:pt-10">
     {#each results as result}
         <!-- Individual Result Item -->
         <div class="flex flex-col items-center px-2 flex-shrink-0">
             <img src="{result.correct ? correct : wrong}" alt="result logo" class="w-6 h-6 mb-1" />
             <p class="text-white font-bold">{result.count}</p>
         </div>
+        
     {/each}
 </div>

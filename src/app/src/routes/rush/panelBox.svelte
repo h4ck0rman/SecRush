@@ -40,7 +40,6 @@
     }
 
     onMount(() => {
-        loading = true;
         handleStartGame();
     });
 
@@ -186,12 +185,9 @@
       <!-- Logo and App Name -->
       <div class="flex items-center space-x-2">
         <img src="{profile}" alt="Logo" class="w-10 h-10 rounded-full" />
-        <p class="text-xl font-mono font-bold">SecRush</p>
+        <p class="text-xl font-mono ">secrush</p>
       </div>
-      <!-- Back Button -->
-      <a href="/" class="text-3xl font-bold hover:text-gray-300">
-        ←
-      </a>
+      
     </header>
     
     <!-- Main Content Area -->
@@ -213,7 +209,8 @@
 
               <!-- Active Game Controls -->
               <div class="flex flex-col space-y-4">
-                <form class="flex flex-col space-y-2">
+                <PuzzleResult results={puzzles} />
+                <form class="flex flex-col space-y-2 md:order-first">
                   
                   <div class="flex space-x-2">
                     <button
@@ -243,7 +240,7 @@
                     </button>
                   </div>
                 </form>
-                <PuzzleResult results={puzzles} />
+                
               </div>
 
           </div>
