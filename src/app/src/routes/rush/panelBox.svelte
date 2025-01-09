@@ -223,28 +223,27 @@
 <div class="flex flex-col w-screen h-dvh bg-gray-800 text-white rounded-lg">
   
     <!-- Header -->
-    <header class="flex items-center justify-between px-4 py-3 bg-zinc-900">
-      <!-- Logo and App Name -->
-      <div >
-        <a href="/" class="flex items-center space-x-2">
-            <img src="{profile}" alt="Logo" class="w-10 h-10 rounded-full" />
-            <p class="text-xl font-mono ">secrush</p>
-        </a>
-        
-      </div>
-      
+    <!-- Header -->
+    <header class="flex items-center justify-between px-4 py-3 bg-black border-b border-white">
+        <!-- Logo and App Name -->
+        <div>
+            <a href="/" class="flex items-center space-x-2">
+                <img src="{profile}" alt="Logo" class="w-10 h-10 rounded-full" />
+                <p class="text-xl font-mono text-white text-glow">secrush</p>
+            </a>
+        </div>
     </header>
     
     <!-- Main Content Area -->
     <div class="flex flex-col md:flex-row flex-1 overflow-hidden">
   
       <!-- Monaco Code Box -->
-      <main class="flex-1 overflow-auto bg-gray-90033">
+      <main class="flex-1 overflow-auto bg-zinc-900">
         <MonacoBox on:lineClick={handleLineClick} on:ready={handleMonacoReady} bind:updateContent={codeUpdate} bind:solutionHighlight={solutionHighlight} class="w-full h-full" />
       </main>
     
       <!-- Footer / Sidebar -->
-      <footer class="bg-zinc-900 px-4 pb-4 md:order-first md:w-1/4 md:py-20 flex flex-col relative">
+      <footer class="bg-black border-t border-white px-4 pb-4 md:order-first md:w-1/4 md:py-20 flex flex-col relative">
         <!-- Toggle Button -->
         <button 
             on:click={togglePuzzleResult} 
@@ -279,7 +278,7 @@
                     <button
                         type="button"
                         on:click={solvePuzzle}
-                        class="flex-1 px-4 py-2 text-gray-300 font-light border border-gray-300 rounded  hover:bg-white hover:text-black hover:border-transparent transition flex items-center justify-center"
+                        class="flex-1 px-4 py-2 text-white font-light border border-gray-300 rounded  hover:bg-white hover:text-black hover:border-transparent transition flex items-center justify-center"
                         disabled={solvePuzzleLoading || solvePuzzleDisable} 
                     >
                         {#if solvePuzzleLoading}
@@ -292,7 +291,7 @@
                     <button
                         type="button"
                         on:click={newPuzzle}
-                        class="flex-1 px-4 py-2 text-gray-300 font-light border border-gray-300 rounded  hover:bg-white hover:text-black hover:border-transparent transition flex items-center justify-center"
+                        class="flex-1 px-4 py-2 text-white font-light border border-gray-300 rounded  hover:bg-white hover:text-black hover:border-transparent transition flex items-center justify-center"
                         disabled={newPuzzleLoading} 
                     >
                         {#if newPuzzleLoading}

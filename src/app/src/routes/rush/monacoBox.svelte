@@ -36,10 +36,29 @@
         };
     
         Monaco = await import("monaco-editor");
+
+        Monaco.editor.defineTheme('custom-zinc-theme', {
+            base: 'vs-dark',
+            inherit: true,
+            rules: [],
+            colors: {
+                'editor.background': '#121010', // Darker charcoal gray
+                'editor.foreground': '#FFFFFF', // White text
+                'editorCursor.foreground': '#FFFFFF', // White cursor
+                'editor.lineHighlightBackground': '#2D2D2D', // Slightly lighter than background
+                'editorLineNumber.foreground': '#FFFFFF80', // Semi-transparent white for line numbers
+                'editor.selectionBackground': '#FFFFFF30', // Semi-transparent white for selections
+                'editor.inactiveSelectionBackground': '#FFFFFF15', // Less opaque for inactive selections
+            }
+        });
+
+        // Apply the custom theme
+        Monaco.editor.setTheme('custom-zinc-theme');
+
         editor = Monaco.editor.create(editorContainer, {
-        value: "\n// Waiting for the next puzzle...\n",
+        value: "\n// Time to hit the next puzzle...\n",
         language: "java",
-        theme: "vs-dark",
+        theme: "custom-zinc-theme",
         tabSize: 2,
         insertSpaces: true,
         lineNumbersMinChars: 3,
