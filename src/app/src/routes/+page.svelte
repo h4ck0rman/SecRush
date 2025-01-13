@@ -1,6 +1,7 @@
 <script>
     import { fade, scale } from 'svelte/transition';
     import { onMount } from 'svelte';
+    import Header from '$lib/components/header.svelte';
 
     const profile = './h4ck0rLogo.png';
 
@@ -58,24 +59,12 @@
         pointer-events: none; /* Allows interactions with underlying elements */
     }
 
-    /* Optional: Adjust body styles if needed */
-    body {
-        margin: 0;
-        padding: 0;
-        font-family: 'Courier New', Courier, monospace;
-    }
 </style>
 
-<!-- Header -->
-<header class="flex items-center justify-between px-4 py-3 bg-black border-b border-white">
-    <!-- Logo and App Name -->
-    <div>
-        <a href="/" class="flex items-center space-x-2">
-            <img src="{profile}" alt="Logo" class="w-10 h-10 rounded-full" />
-            <p class="text-xl font-mono text-white text-glow">secrush</p>
-        </a>
-    </div>
-</header>
+<div class='border-b border-white'>
+    <Header />
+</div>
+
 
 <!-- Hero Section -->
 <div 
