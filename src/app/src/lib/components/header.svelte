@@ -1,5 +1,5 @@
 <script>
-    let profile = './h4ck0rLogo.png';
+    let profile = '/h4ck0rLogo.png';
 </script>
 
 <header class="flex items-center justify-between px-4 py-3 bg-black">
