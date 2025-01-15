@@ -64,9 +64,9 @@ router.get('/newPuzzle', fetchGameSession, async (req, res) => {
 });
 
 // Get a new puzzle for the session (sessionId fetched from cookie)
-router.post('/getPuzzle', fetchGameSession, async (req, res) => {
+router.get('/getPuzzle/:puzzleId', fetchGameSession, async (req, res) => {
     
-    const { puzzleId } = req.body;
+    const { puzzleId } = req.params;
 
     if (!puzzleId || !isUUID(puzzleId)) {
         return res.status(400).json({ error: 'Invalid Puzzle Reference!' });
@@ -79,8 +79,8 @@ router.post('/getPuzzle', fetchGameSession, async (req, res) => {
             return res.status(404).json({ error: 'Puzzle not found' });
         }
 
-        const { _id, code, difficulty, language } = puzzle;
-        return res.json({id: _id, code, difficulty, language});
+        const { _id, code, difficulty, language, vulnerableLine } = puzzle;
+        return res.json({id: _id, code, difficulty, language, vulnerableLine});
 
     } catch (error) {
         console.log(error.message);

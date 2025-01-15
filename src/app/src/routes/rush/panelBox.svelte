@@ -188,7 +188,7 @@
               <div class="flex flex-col space-y-1 md:space-y-4">
                     <PuzzleResult results={puzzles} visible={isPuzzleResultVisible} />
 
-                    <div class="w-full flex space-x-2">
+                    <div class="w-full flex space-x-2 md:order-first">
                         <div class="button-wrapper">
                             <SubmitButton
                                 on:puzzleData={handlePuzzleSubmit} 
