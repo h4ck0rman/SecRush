@@ -12,7 +12,11 @@ const PuzzleSchema = new mongoose.Schema(
         code: { 
             type: String, 
             required: true 
-        }, 
+        },
+        solution: { 
+            type: String, 
+            required: true 
+        },
         language: { 
             type: String, 
             required: true 
@@ -30,6 +34,7 @@ const PuzzleSchema = new mongoose.Schema(
             enum: ['easy', 'medium', 'hard'], 
             default: 'medium' 
         }, 
+
     },
     { 
         // Enable createdAt and updatedAt fields
