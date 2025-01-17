@@ -79,8 +79,8 @@ router.get('/getPuzzle/:puzzleId', fetchGameSession, async (req, res) => {
             return res.status(404).json({ error: 'Puzzle not found' });
         }
 
-        const { _id, code, difficulty, language, vulnerableLine } = puzzle;
-        return res.json({id: _id, code, difficulty, language, vulnerableLine});
+        const { _id, code, difficulty, language, vulnerableLine, solution } = puzzle;
+        return res.json({id: _id, code, difficulty, language, vulnerableLine, solution});
 
     } catch (error) {
         console.log(error.message);
